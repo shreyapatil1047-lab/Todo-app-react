@@ -1,8 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function AddTodo({ onNewItem }) {
+function AddTodo({ onNewItem, isEditing, currentTodo }) {
   const [todoName, setTodoName] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [amount, setAmount] = useState(""); // Naya state for amount
+
+  useEffect(() => {
+    if (isEditing && currentTodo) {
+      // Ye functions ko call karna zaroori hai () ke saath
+      setTodoName(currentTodo.name);
+      setDueDate(currentTodo.dueDate);
+      setAmount(currentTodo.amount);
+    } else {
+      // Edit mode khatam hone par khali karein
+      setTodoName("");
+      setDueDate("");
+      setAmount("");
+    }
+  }, [isEditing, currentTodo]);
 
   const handleNameChange = (event) => {
     setTodoName(event.target.value);
@@ -11,43 +26,56 @@ function AddTodo({ onNewItem }) {
   const handleDateChange = (event) => {
     setDueDate(event.target.value);
   };
+  const handleAmountChange = (event) => {
+    setAmount(event.target.value);
+  };
 
   const handleAddButtonClicked = () => {
-    onNewItem(todoName, dueDate);
+    onNewItem(todoName, dueDate, amount);
     setDueDate("");
     setTodoName("");
+    setAmount("");
   };
 
   return (
-    <div className="row kg-row justify-content-md-center mt-3">
-      <div className="col-4">
+    <div className="row kg-row">
+      <div className="col-12 col-md-4 mb-2">
+        {" "}
+        {/* Mobile pe full width, desktop pe 4 */}
         <input
           type="text"
           className="form-control"
-          placeholder="Enter Todo Here"
+          placeholder="Enter Here"
           value={todoName}
           onChange={handleNameChange}
         />
       </div>
-      <div className="col-4">
+      <div className="col-12 col-md-3 mb-2">
         <input
           type="date"
-          value={dueDate}
           className="form-control"
+          value={dueDate}
           onChange={handleDateChange}
         />
       </div>
-      <div className="col-2">
+      <div className="col-12 col-md-3 mb-2">
+        <input
+          type="number"
+          className="form-control"
+          placeholder="Amount"
+          value={amount}
+          onChange={handleAmountChange}
+        />
+      </div>
+      <div className="col-12 col-md-2">
         <button
-          type="button"
-          className="btn btn-success kg-button"
+          className="btn btn-success w-100"
           onClick={handleAddButtonClicked}
         >
-          Add
+          {isEditing ? "Save" : "Add"}
         </button>
       </div>
     </div>
   );
 }
-
 export default AddTodo;

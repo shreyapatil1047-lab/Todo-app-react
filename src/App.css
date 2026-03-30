@@ -11,3 +11,17 @@ input{
   margin: 10px 5px;
 
 }
+
+.todo-container {
+  width: 100%;
+  max-width: 800px; /* Laptop par had se zyada bada na dikhe */
+  margin: 0 auto;
+  padding: 0 15px; /* Mobile par sides se gap dega */
+}
+
+/* Mobile par font thoda chhota karne ke liye */
+@media (max-width: 576px) {
+  .kg-row {
+    font-size: 14px;
+  }
+}
